@@ -13,7 +13,7 @@ collection = db["data"]
 data_list = []
 
 def inference(process,cpu_usage,ram_usage):
-    clf = joblib.load('D:\Akriti-Project\\anomaly_model.pkl')
+    clf = joblib.load('D:\\Akriti-Project\\anomaly_model.pkl')
 
     data = pd.DataFrame({'max_cpu_usage': [cpu_usage],
                      'max_ram_usage': [ram_usage]})
@@ -44,7 +44,7 @@ def form():
             with st.spinner(text="Generating the result"):
              time.sleep(1)
              result1 = inference(process=process1, cpu_usage=cpu, ram_usage=memory)   
-             data_list.append({"Name": process1, "CPU Usage": cpu, "Memory Usage": memory, "Behaviour":result1}) 
+             data_list.append({"Name": process1, "CPU Usage(%)": cpu, "Memory Usage(MB)": memory, "Behaviour":result1}) 
              st.info(f"The behavior of process '{process1}' is predicted to be: {result1}")
 
     # Button for random data check
@@ -56,7 +56,7 @@ def form():
             with st.spinner(text="Generating the result"):
                 time.sleep(1)
                 result2 = inference(process=process2, cpu_usage=cpu_usage, ram_usage=ram_usage)  
-                data_list.append({"Name": process2, "CPU Usage": cpu_usage, "Memory Usage": ram_usage,"Behaviour":result2})  
+                data_list.append({"Name": process2, "CPU Usage(%)": cpu_usage, "Memory Usage(MB)": ram_usage,"Behaviour":result2})  
                 st.info(f"The behavior of process '{process2}' is predicted to be: {result2}")
 
     # Display output dataframe below

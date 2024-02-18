@@ -4,3 +4,6 @@ streamlit-option-menu
 pandas
 matplotlib 
 seaborn
+joblib
+python-dotenv
+scikit-learn

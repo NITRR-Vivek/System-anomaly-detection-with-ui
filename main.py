@@ -16,7 +16,7 @@ st.set_page_config(
     page_title="Anomaly Detection",
     page_icon="🤖",
     layout="wide",
-    initial_sidebar_state='expanded'
+    initial_sidebar_state='expanded' 
 )
 def authenticate(user_id, user_pass):
     if user_id == USER and user_pass == PASS:
@@ -27,29 +27,32 @@ def authenticate(user_id, user_pass):
 def login():
     if 'logged_in' not in st.session_state:
         st.session_state.logged_in = False
-    col1, col2 = st.columns(2)
+
     st.sidebar.title("Login")
     user_id = st.sidebar.text_input("User ID")
     user_pass = st.sidebar.text_input("Password", type="password")
-    with col1:
-        submit_button = st.sidebar.button("Submit",use_container_width=False)
-    with col2:
-        logout_button = st.sidebar.button("Logout", type='primary',use_container_width=False) 
+    submit_button = st.sidebar.button("Submit", use_container_width=False)
+    logout_button = st.sidebar.button("Logout", type='primary', use_container_width=False) 
 
     if submit_button:
-      if user_id and user_pass: 
-          if authenticate(user_id, user_pass):
-              st.session_state.logged_in = True
-              st.sidebar.success("Login successful!")
-              st.balloons()
-          else:
-              st.sidebar.error("Invalid credentials")
-      else:
-          st.sidebar.warning("Please enter both User ID and Password")
-
+        if st.session_state.logged_in:
+            st.sidebar.info("You are already logged in")
+        else:
+            if user_id and user_pass: 
+                if authenticate(user_id, user_pass):
+                    st.session_state.logged_in = True
+                    st.sidebar.success("Login successful!")
+                    st.balloons()
+                else:
+                    st.sidebar.error("Invalid credentials")
+            else:
+                st.sidebar.warning("Please enter both User ID and Password")
 
     if logout_button:
-      st.session_state.logged_in = False
+        if 'logged_in' in st.session_state:
+            st.session_state.logged_in = False
+        else:
+            st.sidebar.info("You are not logged in")
 
 def streamlit_menu():
     with st.sidebar:

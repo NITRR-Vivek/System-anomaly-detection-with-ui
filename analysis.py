@@ -53,59 +53,69 @@ def plot_data():
     # Fetch data from MongoDB
     df = fetch_data()  
     df = df.iloc[:, 1:]
-
     # Select columns for plotting
     st.sidebar.subheader("Select Columns")
     x_axis = st.sidebar.selectbox("X-axis", df.columns)
     y_axis = st.sidebar.selectbox("Y-axis", df.columns)
-
+    
     # Select plot type
     plot_type = st.sidebar.selectbox("Select Plot Type", ["Bar Plot", "Box Plot", "Histogram", "Scatter Plot", "Line Plot"])
+        
 
-    # Plot the selected data
-    if plot_type == "Bar Plot":
-        st.subheader("Bar Plot")
-        fig, ax = plt.subplots()
-        ax.bar(df[x_axis], df[y_axis])
-        ax.set_xlabel(x_axis)
-        ax.set_ylabel(y_axis)
-        ax.set_title("Bar Plot")
-        st.pyplot(fig)
-
-    elif plot_type == "Box Plot":
-        if not pd.api.types.is_numeric_dtype(df[x_axis]) or not pd.api.types.is_numeric_dtype(df[y_axis]):
-            st.error("Column should be numeric for box plotting.")
+    try:
+        # Check if the specified columns are None
+        if x_axis is None or y_axis is None:
+            st.error("Please select valid columns for plotting.")
             return
-
-        # Create the plot
-        st.subheader("Box Plot")
-        fig, ax = plt.subplots()
-        sns.boxplot(x=df[x_axis], y=df[y_axis], ax=ax)
-        st.pyplot(fig)
-
-    elif plot_type == "Histogram":
-        st.subheader("Histogram")
-        fig, ax = plt.subplots()
-        ax.hist(df[y_axis])
-        ax.set_xlabel(y_axis)
-        ax.set_ylabel("Frequency")
-        ax.set_title("Histogram")
-        st.pyplot(fig)
-
-    elif plot_type == "Scatter Plot":
-        st.subheader("Scatter Plot")
-        fig, ax = plt.subplots()
-        ax.scatter(df[x_axis], df[y_axis])
-        ax.set_xlabel(x_axis)
-        ax.set_ylabel(y_axis)
-        ax.set_title("Scatter Plot")
-        st.pyplot(fig)
-
-    elif plot_type == "Line Plot":
-        st.subheader("Line Plot")
-        fig, ax = plt.subplots()
-        ax.plot(df[x_axis], df[y_axis])
-        ax.set_xlabel(x_axis)
-        ax.set_ylabel(y_axis)
-        ax.set_title("Line Plot")
-        st.pyplot(fig)
+        
+        # Plot the selected data
+        if plot_type == "Bar Plot":
+            st.subheader("Bar Plot")
+            fig, ax = plt.subplots()
+            ax.bar(df[x_axis], df[y_axis])
+            ax.set_xlabel(x_axis)
+            ax.set_ylabel(y_axis)
+            ax.set_title("Bar Plot")
+            st.pyplot(fig)
+    
+        elif plot_type == "Box Plot":
+            if not pd.api.types.is_numeric_dtype(df[x_axis]) or not pd.api.types.is_numeric_dtype(df[y_axis]):
+                st.error("Column should be numeric for box plotting.")
+                return
+    
+            # Create the plot
+            st.subheader("Box Plot")
+            fig, ax = plt.subplots()
+            sns.boxplot(x=df[x_axis], y=df[y_axis], ax=ax)
+            st.pyplot(fig)
+    
+        elif plot_type == "Histogram":
+            st.subheader("Histogram")
+            fig, ax = plt.subplots()
+            ax.hist(df[y_axis])
+            ax.set_xlabel(y_axis)
+            ax.set_ylabel("Frequency")
+            ax.set_title("Histogram")
+            st.pyplot(fig)
+    
+        elif plot_type == "Scatter Plot":
+            st.subheader("Scatter Plot")
+            fig, ax = plt.subplots()
+            ax.scatter(df[x_axis], df[y_axis])
+            ax.set_xlabel(x_axis)
+            ax.set_ylabel(y_axis)
+            ax.set_title("Scatter Plot")
+            st.pyplot(fig)
+    
+        elif plot_type == "Line Plot":
+            st.subheader("Line Plot")
+            fig, ax = plt.subplots()
+            ax.plot(df[x_axis], df[y_axis])
+            ax.set_xlabel(x_axis)
+            ax.set_ylabel(y_axis)
+            ax.set_title("Line Plot")
+            st.pyplot(fig)
+    except KeyError:
+        st.error("One or more specified columns does not exist in the DataFrame.")
+        
+    
