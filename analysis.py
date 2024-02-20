@@ -58,16 +58,15 @@ def plot_data():
     x_axis = st.sidebar.selectbox("X-axis", df.columns)
     y_axis = st.sidebar.selectbox("Y-axis", df.columns)
     
-    # Select plot type
-    plot_type = st.sidebar.selectbox("Select Plot Type", ["Bar Plot", "Box Plot", "Histogram", "Scatter Plot", "Line Plot"])
-        
+     # Select plot type
+    plot_type = st.sidebar.selectbox("Select Plot Type", ["Bar Plot", "Box Plot", "Histogram", "Scatter Plot", "Line Plot", "Pie Plot"])
 
     try:
         # Check if the specified columns are None
         if x_axis is None or y_axis is None:
             st.error("Please select valid columns for plotting.")
             return
-        
+
         # Plot the selected data
         if plot_type == "Bar Plot":
             st.subheader("Bar Plot")
@@ -77,18 +76,18 @@ def plot_data():
             ax.set_ylabel(y_axis)
             ax.set_title("Bar Plot")
             st.pyplot(fig)
-    
+
         elif plot_type == "Box Plot":
             if not pd.api.types.is_numeric_dtype(df[x_axis]) or not pd.api.types.is_numeric_dtype(df[y_axis]):
                 st.error("Column should be numeric for box plotting.")
                 return
-    
+
             # Create the plot
             st.subheader("Box Plot")
             fig, ax = plt.subplots()
             sns.boxplot(x=df[x_axis], y=df[y_axis], ax=ax)
             st.pyplot(fig)
-    
+
         elif plot_type == "Histogram":
             st.subheader("Histogram")
             fig, ax = plt.subplots()
@@ -97,7 +96,7 @@ def plot_data():
             ax.set_ylabel("Frequency")
             ax.set_title("Histogram")
             st.pyplot(fig)
-    
+
         elif plot_type == "Scatter Plot":
             st.subheader("Scatter Plot")
             fig, ax = plt.subplots()
@@ -106,7 +105,7 @@ def plot_data():
             ax.set_ylabel(y_axis)
             ax.set_title("Scatter Plot")
             st.pyplot(fig)
-    
+
         elif plot_type == "Line Plot":
             st.subheader("Line Plot")
             fig, ax = plt.subplots()
@@ -115,7 +114,14 @@ def plot_data():
             ax.set_ylabel(y_axis)
             ax.set_title("Line Plot")
             st.pyplot(fig)
+
+        elif plot_type == "Pie Plot":
+            st.subheader("Pie Plot")
+            fig, ax = plt.subplots()
+            df[y_axis].value_counts().plot(kind='pie', ax=ax, autopct='%1.1f%%')
+            ax.set_ylabel('')
+            ax.set_title("Pie Plot")
+            st.pyplot(fig)
+
     except KeyError:
         st.error("One or more specified columns does not exist in the DataFrame.")
-        
-    
